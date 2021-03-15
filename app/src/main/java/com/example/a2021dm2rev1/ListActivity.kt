@@ -11,7 +11,7 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        val lista = intent.getStringArrayListExtra("lista").toArray()
+        val lista = RevDB.getInstance(this)!!.PessoaDAO().listar()
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lista)
 

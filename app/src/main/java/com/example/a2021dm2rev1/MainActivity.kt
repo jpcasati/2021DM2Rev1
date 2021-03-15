@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var lista : ArrayList<String> = ArrayList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,9 +21,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Olá "+edtNome.text+", seja bem vindo(a)!",
                 Toast.LENGTH_LONG).show()
 
-            if(tglSalvar.isChecked)
-                lista.add(edtNome.text.toString())
-
+            if(tglSalvar.isChecked) {
+                val p: Pessoa = Pessoa(edtNome.text.toString())
+                RevDB.getInstance(this)!!.PessoaDAO().salvar(p)
+            }
         }
     }
 
@@ -38,12 +37,11 @@ class MainActivity : AppCompatActivity() {
 
         if(item.itemId == R.id.menu_listagem) {
 
-            if(lista.isEmpty()) {
+            if(RevDB.getInstance(this)!!.PessoaDAO().listar().isEmpty()) {
                 Toast.makeText(this, "Lista Vazia",
                     Toast.LENGTH_LONG).show()
             } else {
                 val i = Intent(this, ListActivity::class.java)
-                i.putExtra("lista", lista)
                 startActivity(i)
             }
 
